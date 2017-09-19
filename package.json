@@ -1,0 +1,14 @@
+{
+  "name": "voting-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.7.0",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0"
+  },
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
