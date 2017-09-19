@@ -17,6 +17,16 @@ const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 
+const morgan = require('morgan');
+
+const passport = require('passport');
+
+const cookieParser = require('cookie-parser');
+
+const flash = require('connect-flash');
+
+const session = require('express-session');
+
 
 /**
  * configure app
@@ -34,6 +44,17 @@ app.use(expressLayouts);
 // retrieve information from POST requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.use(morgan('dev')); // log all requests to the console
+
+
+// required for passport
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(session({ secret: process.env.secret })); // session secret
+app.use(passport.initialize()); // initialize passport
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 // connect to database
