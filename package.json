@@ -9,6 +9,8 @@
     "eslint-plugin-import": "^2.7.0"
   },
   "dependencies": {
-    "express": "^4.15.4"
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "express-ejs-layouts": "^2.3.1"
   }
 }
