@@ -1,4 +1,12 @@
-<h2>Welcome to the voting app</h2>
-<a href="/login">Login</a>
-<a href="/signup">Signup</a>
-
+<section class="container">
+  <div class="jumbotron text-center">
+      <h2>Welcome to the Voting App</h2>
+      <% if (username.length <= 0) { %>
+      <a href="/signup" class="btn btn-primary">Signup</a>      
+      <a href="/login" class="btn btn-primary">Login</a>
+      <% } else { %>
+        <a href="/add-poll" class="btn btn-primary">New Poll</a>      
+        <a href="/profile" class="btn btn-primary">Profile</a>
+      <% } %>
+  </div>
+</section>

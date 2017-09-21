@@ -6,7 +6,7 @@
 // load dependencies
 const LocalStrategy = require('passport-local').Strategy;
 
-const User = require('./models/user');
+const User = require('./models/userModel');
 
 
 module.exports = (passport) => {
@@ -28,8 +28,9 @@ module.exports = (passport) => {
   passport.use('local-signup', new LocalStrategy({
     passReqToCallback: true,
   }, (req, username, password, done) => {
-    // check if user email already exists in DB
+    // User.findOne wont fire unless data is sent back
     process.nextTick(() => {
+      // check if user email already exists in DB
       User.findOne({ username }, (err, user) => {
         if (err) {
           return done(err);
@@ -42,9 +43,38 @@ module.exports = (passport) => {
 
         // email does not exist in DB
         // create new user
-        const newUser = new User(req.body);
+        const newUser = new User();
+        newUser.username = username;
+        newUser.password = newUser.generateHash(password);
         newUser.save();
         return done(null, newUser);
+      });
+    });
+  }));
+
+  // local strategy for login
+  passport.use('local-login', new LocalStrategy({
+    passReqToCallback: true,
+  }, (req, username, password, done) => {
+    process.nextTick(() => {
+      // check if username exists
+      User.findOne({ username }, (err, user) => {
+        if (err) {
+          return done(err);
+        }
+
+        // wrong user
+        if (!user) {
+          return done(null, false, req.flash('loginMessage', 'Username is incorrect'));
+        }
+
+        // wrong password
+        if (!user.validPassword(password)) {
+          return done(null, false, req.flash('loginMessage', 'Password is incorrect'));
+        }
+
+        // login successful
+        return done(null, user);
       });
     });
   }));

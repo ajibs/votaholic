@@ -1,19 +1,37 @@
+const Poll = require('../models/pollModel.js');
+
 function showHome(req, res) {
-  res.render('pages/home');
+  const username = req.user ? req.user.username : '';
+  res.render('pages/home', {
+    username,
+  });
 }
 
 function showSignup(req, res) {
-  res.render('pages/signup');
+  const username = '';
+  res.render('pages/signup', {
+    username,
+    message: req.flash('signupMessage'),
+  });
 }
 
 function showLogin(req, res) {
-  res.render('pages/login');
+  const username = '';
+  res.render('pages/login', {
+    username,
+    message: req.flash('loginMessage'),
+  });
 }
 
 function showProfile(req, res) {
   const username = req.user ? req.user.username : '';
-  res.render('pages/profile', {
-    username,
+  Poll.find({ username }, (err, polls) => {
+    if (err) throw err;
+    if (!polls) console.log('user not found');
+    res.render('pages/profile', {
+      username,
+      polls,
+    });
   });
 }
 

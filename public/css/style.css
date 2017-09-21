@@ -1,0 +1,10 @@
+section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.form-container {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 40px;
+}

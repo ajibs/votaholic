@@ -1,0 +1,13 @@
+<section class="container-fluid">
+  <div class="form-container col-md-4 col-md-offset-4">
+    <h2><%= singlePoll.title %></h2>
+    <form action="/cast-vote" method="POST">
+    <% singlePoll.options.forEach( option => { %>
+      <div class="radio">
+      <label><input type="radio" name="labelID" value="<%= option._id %>"><%= option.label %></label>
+    <% }) %>
+      </div>  
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</section>

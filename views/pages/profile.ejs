@@ -1,1 +1,18 @@
-<h2>Welcome <%= username %></h2>
+<section class="container text-center">
+  <h2>Welcome <%= username %></h2>
+  <a href="/add-poll" class="btn btn-primary">Add Poll</a><br>
+  
+  <div class="container col-md-4 col-md-offset-4">
+      <% if (polls.length > 0) { %>
+        <% polls.forEach( poll => { %>
+          <div class="form-container">
+            <a href="/poll/<%= poll._id %>">
+              <h4><%= poll.title %></h4>
+            </a>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <h3>You have no polls yet</h3>
+      <% } %>
+  </div>
+</section>
