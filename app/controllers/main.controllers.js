@@ -25,14 +25,17 @@ function showLogin(req, res) {
 
 function showProfile(req, res) {
   const username = req.user ? req.user.username : '';
-  Poll.find({ username }, (err, polls) => {
-    if (err) throw err;
-    if (!polls) console.log('user not found');
-    res.render('pages/profile', {
-      username,
-      polls,
+  // find polls, sort according to the most recent, then execute callback
+  Poll.find({ username })
+    .sort({ _id: -1 })
+    .exec((err, polls) => {
+      if (err) throw err;
+      if (!polls) console.log('user not found');
+      res.render('pages/profile', {
+        username,
+        polls,
+      });
     });
-  });
 }
 
 

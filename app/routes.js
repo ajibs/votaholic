@@ -16,14 +16,14 @@ require('./passport.config')(passport);
 
 // middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next(); // if user is authenticated in the session, carry on
+  if (!req.isAuthenticated()) {
+    res.redirect('/login'); // if user is not authenticated in the session, redirect to login
   }
-  res.redirect('/login');
+  return next(); // authenticated; carry on
 }
 
 
-// diplay home page
+// display home page
 router.get('/', mainController.showHome);
 
 
@@ -49,9 +49,10 @@ router.post('/login', passport.authenticate('local-login', {
 router.get('/profile', isLoggedIn, mainController.showProfile);
 
 
-// show add poll
-router.get('/add-poll', isLoggedIn, pollController.showAddPoll);
-router.post('/add-poll', isLoggedIn, pollController.addNewPoll);
+// show new poll page
+router.get('/new-poll', isLoggedIn, pollController.showNewPoll);
+// save poll to DB
+router.post('/new-poll', isLoggedIn, pollController.createNewPoll);
 
 
 // show single poll
@@ -59,6 +60,9 @@ router.get('/poll/:query', pollController.showSinglePoll);
 
 // vote for an option
 router.post('/cast-vote', pollController.castVote);
+
+
+router.post('/delete-poll', isLoggedIn, pollController.deletePoll);
 
 
 // logout

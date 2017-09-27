@@ -12,6 +12,9 @@ const pollModel = new Schema({
       default: 0,
     },
   }],
+  votedIP: [{
+    type: String,
+  }],
 });
 
 module.exports = mongoose.model('Poll', pollModel);

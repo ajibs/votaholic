@@ -1,13 +1,104 @@
 <section class="container-fluid">
-  <div class="form-container col-md-4 col-md-offset-4">
-    <h2><%= singlePoll.title %></h2>
-    <form action="/cast-vote" method="POST">
-    <% singlePoll.options.forEach( option => { %>
-      <div class="radio">
-      <label><input type="radio" name="labelID" value="<%= option._id %>"><%= option.label %></label>
-    <% }) %>
-      </div>  
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-  </div>
-</section>
+    <div class="form-container col-md-4 col-md-offset-4">
+      <h2 class="text-uppercase text-center"><%= singlePoll.title %> ?</h2>
+      <canvas id="myChart" width="400" height="400"></canvas>    
+      <form id="votingForm">
+      <% var allLabels = []; %>
+      <% var allVotes = []; %>      
+      <% singlePoll.options.forEach( (option) => { %>
+        <div class="radio">
+          <label>
+            <input type="radio" name="labelID" class="radio-button" value="<%= option._id %>"><%= option.label %>
+          </label>
+          <!-- compile all labels and votes in arrays to be used with charts.js -->
+          <% allLabels.push(option.label) %>
+          <% allVotes.push(option.votes) %>
+        </div>  
+        <% }) %>
+        <% if (username.length > 0) { %>
+          <div class="radio">
+            <label for="customOption">Custom Option</label>        
+            <input type="text" name="newOption" id="custom" placeholder="Enter your own option">
+          </div>
+        <% } %>
+        <button type="submit" class="btn btn-primary">Vote</button>
+      </form>
+    </div>
+  </section>
+  <script src="/vendors/js/Chart.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      /* on typing input into custom option
+     * deselect any checked radio buttons
+     */
+      let allRadios = document.getElementsByClassName('radio-button');
+  
+      $('#custom').on('click', function() {
+        for(let x = 0; x < allRadios.length; x++){
+          allRadios[x].checked = false;
+        }
+      });
+      
+  
+      /**
+       * submit form through ajax request
+       * serialize() sends all form data
+       */  
+      $("#votingForm").submit(function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+          type: "POST",
+          url: "/cast-vote",
+          data: {
+            labelID: $(this).serialize(),
+            custom: $("#custom").val(),
+            id: "<%=singlePoll._id%>",
+          },
+          success: function(result) {
+            location.reload();
+          },
+          error: function(result) {
+            alert('failed to cast vote');
+          }
+        });
+      });
+  
+  
+      /**
+       * display results in chart form using charts.js
+       * convert allLabels into an array of strings
+       */
+      const compiledLabels = ["<%= allLabels %>"].join(',').split(',');
+      var ctx = document.getElementById("myChart");
+      var myChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: compiledLabels,
+            datasets: [{
+                label: 'Number of Votes',
+                data: [<%=allVotes%>],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(0, 0, 0, 0.5)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+          }
+      });
+  
+      });  
+  </script>
+        
