@@ -22,8 +22,7 @@ function createNewPoll(req, res) {
   arrayOptions.forEach((element) => {
     poll.options.push({ label: element });
   });
-  poll.save();
-  res.redirect('/profile');
+  poll.save().then(res.redirect('/my-polls'));
 }
 
 
@@ -39,6 +38,22 @@ function showSinglePoll(req, res) {
       singlePoll: poll,
     });
   });
+}
+
+
+function showMyPolls(req, res) {
+  const username = req.user ? req.user.username : '';
+  // find polls, sort according to the most recent, then execute callback
+  Poll.find({ username })
+    .sort({ _id: -1 })
+    .exec((err, polls) => {
+      if (err) throw err;
+      if (!polls) console.log('user not found');
+      res.render('pages/my-polls', {
+        username,
+        polls,
+      });
+    });
 }
 
 
@@ -169,6 +184,7 @@ module.exports = {
   showNewPoll,
   createNewPoll,
   showSinglePoll,
+  showMyPolls,
   castVote,
   deletePoll,
 };

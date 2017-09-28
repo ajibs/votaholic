@@ -1,12 +1,66 @@
-<section class="container">
-  <div class="jumbotron text-center">
-      <h2>Welcome to the Voting App</h2>
-      <% if (username.length <= 0) { %>
-      <a href="/signup" class="btn btn-primary">Signup</a>      
-      <a href="/login" class="btn btn-primary">Login</a>
-      <% } else { %>
-        <a href="/add-poll" class="btn btn-primary">New Poll</a>      
-        <a href="/profile" class="btn btn-primary">Profile</a>
-      <% } %>
+<header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1 class="super-title">Votaholic</h1>
+        <a href="/new-poll" id="landing-button-create-poll" class="btn btn-primary btn-lg landing-button"> 
+          <i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>
+          <span class="landing-button-text">Create a Poll</span>          
+        </a>
+        <a href="/explore" id="landing-button-explore" class="btn btn-primary btn-lg landing-button">
+          <i class="fa fa-search fa-lg" aria-hidden="true"></i>
+          <span class="landing-button-text">Explore Polls</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <div class="row text-center">
+      <h2 class="section-title">Features</h2>
+      <hr>   
+      <div class="col-md-4 column-gap">
+        <i class="fa fa-bolt fa-4x icon-color" aria-hidden="true"></i>
+        <h3>Live Results</h3>
+        <p class="text-muted">View results of poll real-time.</p>
+      </div>
+      <div class="col-md-4 column-gap">
+        <i class="fa fa-check fa-4x icon-color" aria-hidden="true"></i>
+        <h3>Numerous Polls</h3>
+        <p class="text-muted">Create as many polls as you like.</p>
+      </div>
+      <div class="col-md-4 column-gap">
+        <i class="fa fa-heart fa-4x icon-color" aria-hidden="true"></i>
+        <h3>Made with Love</h3>
+        <p class="text-muted">You have to make web apps with love these days!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark-section">
+  <div class="container">
+    <div class="row text-center text-uppercase">
+      <h2 class="section-title light-heading">Recent Polls</h2>
+      <hr class="light">
+      <% if (recentPolls) {
+        recentPolls.forEach( poll => { %>
+      <div class="col-md-4">
+        <div class="form-container column-gap">
+          <a href="/poll/<%= poll._id %>">
+            <h4 class="poll-title" ><%= poll.title %></h4>
+            <button class="btn btn-primary btn-lg">View</button>           
+          </a>
+        </div>
+      </div>
+        <% })
+       } %>
+        <a href="/explore" class="btn btn-primary btn-lg explore-button">
+          <i class="fa fa-search fa-lg" aria-hidden="true"></i>
+          <span class="landing-button-text">Explore Polls</span>
+        </a>
+      </div>
   </div>
 </section>

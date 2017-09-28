@@ -2,9 +2,17 @@ const Poll = require('../models/pollModel.js');
 
 function showHome(req, res) {
   const username = req.user ? req.user.username : '';
-  res.render('pages/home', {
-    username,
-  });
+
+  // find polls, sort according to the most recent, limit to 3, then execute call back
+  Poll.find({}) // find all polls
+    .sort({ _id: -1 }) // sort according to the most recent
+    .limit(3) // limit to 3 results
+    .exec((err, recentPolls) => {
+      res.render('pages/home', {
+        username,
+        recentPolls,
+      });
+    });
 }
 
 function showSignup(req, res) {
@@ -23,25 +31,22 @@ function showLogin(req, res) {
   });
 }
 
-function showProfile(req, res) {
+function showExplore(req, res) {
   const username = req.user ? req.user.username : '';
-  // find polls, sort according to the most recent, then execute callback
-  Poll.find({ username })
+  Poll.find({})
     .sort({ _id: -1 })
+    .limit(20)
     .exec((err, polls) => {
-      if (err) throw err;
-      if (!polls) console.log('user not found');
-      res.render('pages/profile', {
+      res.render('pages/explore', {
         username,
         polls,
       });
     });
 }
 
-
 module.exports = {
   showHome,
   showSignup,
   showLogin,
-  showProfile,
+  showExplore,
 };

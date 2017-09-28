@@ -1,6 +1,6 @@
-<section class="container-fluid">
+<section class="container-fluid dark-section">
   <div class="form-container col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-    <h2>Join Us</h2>
+    <h2 class="super-title">Join Us</h2>
     <form action="/signup" method="post">
       <% if (message.length > 0) { %>
         <div class="alert alert-danger">
@@ -14,7 +14,7 @@
       <div class="form-group">
         <label for="inputPasword">Password</label>
         <input type="password" name="password" class="form-control" placeholder="Enter password" minlength="5">      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
     </form>
   </div>
 </section>

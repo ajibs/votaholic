@@ -1,0 +1,16 @@
+<section class="container-fluid text-center dark-section">            
+<% if (polls.length > 0) { %>
+  <% polls.forEach( poll => { %>
+    <div class="col-md-4">
+    <div class="form-container column-gap">
+      <a href="/poll/<%= poll._id %>">
+        <h4 class="poll-title" ><%= poll.title %></h4>
+        <button class="btn btn-primary btn-lg">View</button>        
+      </a>
+    </div>
+  </div>
+  <% }); %>
+<% } else { %>
+  <h3>No polls yet</h3>
+<% } %>
+</section>

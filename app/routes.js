@@ -30,7 +30,7 @@ router.get('/', mainController.showHome);
 // signup user
 router.get('/signup', mainController.showSignup);
 router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/profile',
+  successRedirect: '/my-polls',
   failureRedirect: '/signup',
   failureFlash: true,
 }));
@@ -39,20 +39,24 @@ router.post('/signup', passport.authenticate('local-signup', {
 // login user
 router.get('/login', mainController.showLogin);
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/profile',
+  successRedirect: '/my-polls',
   failureRedirect: '/login',
   failureFlash: true,
 }));
 
 
-// show profile
-router.get('/profile', isLoggedIn, mainController.showProfile);
+// show user polls
+router.get('/my-polls', isLoggedIn, pollController.showMyPolls);
 
 
 // show new poll page
 router.get('/new-poll', isLoggedIn, pollController.showNewPoll);
 // save poll to DB
 router.post('/new-poll', isLoggedIn, pollController.createNewPoll);
+
+
+// show explore page
+router.get('/explore', mainController.showExplore);
 
 
 // show single poll
