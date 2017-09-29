@@ -16,7 +16,7 @@ Votaholic is a [FreeCodeCamp](https://www.freecodecamp.org/) Project.
 
 ## Getting Started
 Votaholic is hosted on heroku and can be accessed here:
- - [Production](https://jobbatical.herokuapp.com/)
+ - [Production](https://votaholic.herokuapp.com/)
 
 To use backend API's alone, please use the following instructions. 
   - Download and install [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en)
@@ -24,10 +24,10 @@ To use backend API's alone, please use the following instructions.
   - Use the Service API's below with Postman (See how in: Using Postman, below)
 
 ### Service APIs:
-  - [Signup](https://jobbatical.herokuapp.com/signup): Uses username and password
-  - [Login](https://jobbatical.herokuapp.com/login): Uses username and password
-  - [Create Poll](https://jobbatical.herokuapp.com/new-poll): Takes in the poll details, user must be logged in
-  - [Vote Poll](https://jobbatical.herokuapp.com/cast-vote): Uses 'value' of poll option, 'value' of custom option and '_id' of poll.
+  - [Signup](https://votaholic.herokuapp.com/signup): Uses username and password
+  - [Login](https://votaholic.herokuapp.com/login): Uses username and password
+  - [Create Poll](https://votaholic.herokuapp.com/new-poll): Takes in the poll details, user must be logged in
+  - [Vote Poll](https://votaholic.herokuapp.com/cast-vote): Uses 'value' of poll option, 'value' of custom option and '_id' of poll.
 
 
 ### Using Postman:
