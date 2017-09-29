@@ -2,6 +2,7 @@ const Poll = require('../models/pollModel');
 
 const ip = require('ip');
 
+
 function showNewPoll(req, res) {
   const username = req.user ? req.user.username : '';
   res.render('pages/new-poll', {
@@ -9,19 +10,24 @@ function showNewPoll(req, res) {
   });
 }
 
+
 function createNewPoll(req, res) {
   const username = req.user ? req.user.username : '';
   const poll = new Poll();
   poll.username = username;
   poll.title = req.body.title;
 
-  // split options into array
+  // split user options into array
   const arrayOptions = req.body.options.split(',');
 
-  // loop through options and save
-  arrayOptions.forEach((element) => {
-    poll.options.push({ label: element });
+  // loop through user options and save
+  arrayOptions.forEach((option) => {
+    poll.options.push({
+      label: option,
+    });
   });
+
+  // save poll to db and show my polls
   poll.save().then(res.redirect('/my-polls'));
 }
 
@@ -31,8 +37,14 @@ function showSinglePoll(req, res) {
   const query = req.params.query;
 
   Poll.findOne({ _id: query }, (err, poll) => {
-    if (err) throw err;
-    if (!poll) console.log('option not found');
+    if (err) {
+      throw err;
+    }
+
+    if (!poll) {
+      res.send('Poll not found');
+    }
+
     res.render('pages/single-poll', {
       username,
       singlePoll: poll,
@@ -47,13 +59,26 @@ function showMyPolls(req, res) {
   Poll.find({ username })
     .sort({ _id: -1 })
     .exec((err, polls) => {
-      if (err) throw err;
-      if (!polls) console.log('user not found');
+      if (err) {
+        throw err;
+      }
+
+      if (!polls) {
+        res.send('Your Polls not found');
+      }
+
       res.render('pages/my-polls', {
         username,
         polls,
       });
     });
+}
+
+
+function cleanLabel(labelID) {
+  // extract id of chosen option from serialized form
+  const label = labelID.replace('labelID=', '');
+  return label.replace('&newOption=', '');
 }
 
 
@@ -75,18 +100,32 @@ function castVote(req, res) {
         error: 'You can only vote once on a poll',
       });
     } else {
-      console.log('not found');
-      // allow user to vote and save user IP to database
-      let votedOption = req.body.labelID;
+      /**
+       * poll not found implies user ip has not voted on poll
+       * allow user to vote
+       * save user IP to database
+       */
 
-      // extract id of chosen option from serialized form
-      votedOption = votedOption.replace('labelID=', '');
-      votedOption = votedOption.replace('&newOption=', '');
+      // chosen option
+      const votedOption = cleanLabel(req.body.labelID);
 
-      // req.body.custom exists means user entered their own option
-      if (req.body.custom) {
+      // req.body.custom does not exist; means no custom option to handle
+      if (!req.body.custom) {
+        // vote for chosen option
+        Poll.updateOne(
+          { 'options._id': votedOption },
+          { $inc: { 'options.$.votes': 1 }, $push: { votedIP: userIP } },
+          (err) => {
+            if (err) throw err;
+            res.json({
+              status: 200,
+              success: 'Vote successful',
+            });
+          }
+        );
+      } else {
+        // custom option exists
         const newOption = req.body.custom;
-        console.log(`new: ${newOption}`);
         Poll.updateOne(
           { _id: pollID },
           {
@@ -104,67 +143,9 @@ function castVote(req, res) {
             });
           }
         );
-      } else {
-        // no custom option, update chosen option
-        console.log(2);
-        Poll.updateOne(
-          { 'options._id': votedOption },
-          { $inc: { 'options.$.votes': 1 }, $push: { votedIP: userIP } },
-          (err) => {
-            if (err) throw err;
-            res.json({
-              status: 200,
-              success: 'Vote successful',
-            });
-          }
-        );
       }
     }
   });
-
-  
- /* let votedOption = req.body.labelID;
-
-  // extract id of option from serialized form
-  votedOption = votedOption.replace('labelID=', '');
-  votedOption = votedOption.replace('&newOption=', '');
-
-  // custom exists means user entered their own option
-  if (req.body.custom) {
-    const newOption = req.body.custom;
-    console.log(`new: ${newOption}`);
-    Poll.updateOne(
-      { _id: req.body.id },
-      {
-        $push:
-          {
-            options: { label: newOption, votes: 1 },
-          },
-      },
-      (err) => {
-        if (err) throw err;
-        res.json({
-          status: 200,
-          success: 'Vote successful',
-        });
-      }
-    );
-  } else {
-    // no custom option, update chosen option
-    console.log(2);
-    Poll.updateOne(
-      { 'options._id': votedOption },
-      { $inc: { 'options.$.votes': 1 } },
-      (err) => {
-        if (err) throw err;
-        res.json({
-          status: 200,
-          success: 'Vote successful',
-        });
-      }
-    );
-  }
-  */
 }
 
 

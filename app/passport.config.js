@@ -2,7 +2,6 @@
  * config file for passport.js
  */
 
-
 // load dependencies
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -10,8 +9,11 @@ const User = require('./models/userModel');
 
 
 module.exports = (passport) => {
-  // for persistent login sessions
-  // passport needs ability to serialize and unserialize users out of session
+  /**
+   * for persistent login sessions
+   * passport needs ability to serialize and unserialize users out of session
+   */
+
   // serialize user for the session
   passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -41,8 +43,7 @@ module.exports = (passport) => {
           return done(null, false, req.flash('signupMessage', 'That username already exists'));
         }
 
-        // email does not exist in DB
-        // create new user
+        // email does not exist in DB; create new user
         const newUser = new User();
         newUser.username = username;
         newUser.password = newUser.generateHash(password);
@@ -51,6 +52,7 @@ module.exports = (passport) => {
       });
     });
   }));
+
 
   // local strategy for login
   passport.use('local-login', new LocalStrategy({
@@ -63,7 +65,7 @@ module.exports = (passport) => {
           return done(err);
         }
 
-        // wrong user
+        // wrong username
         if (!user) {
           return done(null, false, req.flash('loginMessage', 'Username is incorrect'));
         }
@@ -79,4 +81,3 @@ module.exports = (passport) => {
     });
   }));
 };
-

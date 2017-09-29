@@ -10,21 +10,27 @@ const pollController = require('./controllers/poll.controller');
 const passport = require('passport');
 
 
-// bring in passport local-signup and login
+// bring in passport local-signup and local-login
 require('./passport.config')(passport);
 
 
 // middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
   if (!req.isAuthenticated()) {
-    res.redirect('/login'); // if user is not authenticated in the session, redirect to login
+    // if user is not authenticated in the session, redirect to login
+    res.redirect('/login');
   }
-  return next(); // authenticated; carry on
+  // authenticated; carry on
+  return next();
 }
 
 
 // display home page
 router.get('/', mainController.showHome);
+
+
+// show explore page
+router.get('/explore', mainController.showExplore);
 
 
 // signup user
@@ -45,27 +51,24 @@ router.post('/login', passport.authenticate('local-login', {
 }));
 
 
-// show user polls
+// show my polls
 router.get('/my-polls', isLoggedIn, pollController.showMyPolls);
 
 
-// show new poll page
+// create new poll
 router.get('/new-poll', isLoggedIn, pollController.showNewPoll);
-// save poll to DB
 router.post('/new-poll', isLoggedIn, pollController.createNewPoll);
-
-
-// show explore page
-router.get('/explore', mainController.showExplore);
 
 
 // show single poll
 router.get('/poll/:query', pollController.showSinglePoll);
 
+
 // vote for an option
 router.post('/cast-vote', pollController.castVote);
 
 
+// delete a poll
 router.post('/delete-poll', isLoggedIn, pollController.deletePoll);
 
 

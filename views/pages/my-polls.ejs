@@ -1,44 +1,48 @@
-<section class="container-fluid text-center dark-section">
-  <div class="jumbotron">
-  <h2>Welcome <span class="text-uppercase"><strong><%= username %></strong></span></h2>
-  <a href="/new-poll" class="btn btn-primary btn-lg">New Poll</a><br>
-  </div>
-  
-  <div class="container">
-      <% if (polls.length > 0) { %>
-        <% polls.forEach( poll => { %>
-          <div class="col-md-6 ">
-          <div class="form-container column-gap">
-            <a href="/poll/<%= poll._id %>">
-              <h4 class="poll-title" ><%= poll.title %></h4>
-              <button class="btn btn-primary btn-lg">View</button>
-            </a>
-            <button value="<%= poll._id %>" class="btn btn-danger btn-lg delPoll">Delete</button>
+
+        <section class="container-fluid text-center dark-section">
+          <div class="jumbotron">
+            <h2>
+              Welcome 
+              <span class="text-uppercase"><strong><%= username %></strong></span>
+            </h2>
+            <a href="/new-poll" class="btn btn-primary btn-lg">New Poll</a><br>
           </div>
-        </div>
-        <% }); %>
-      <% } else { %>
-        <h3>You have no polls yet</h3>
-      <% } %>
-  </div>
-</section>
+          
+          <div class="container">
+          <% if (polls.length > 0) { %>
+            <% polls.forEach( poll => { %>
+            <div class="col-md-6 ">
+              <div class="form-container column-gap">
+                <a href="/poll/<%= poll._id %>">
+                  <h4 class="poll-title" ><%= poll.title %></h4>
+                  <button class="btn btn-primary btn-lg">View</button>
+                </a>
+                <button value="<%= poll._id %>" class="btn btn-danger btn-lg delPoll">Delete</button>
+              </div>
+            </div>
+            <% }); %>
+          <% } else { %>
+            <h3 class="light-heading">You have no polls yet</h3>
+          <% } %>
+          </div>
+        </section>
 
-<script>
-  $(".delPoll").click(function(e) {
-    e.preventDefault();
+        <script>
+          $(".delPoll").click(function(e) {
+            e.preventDefault();
 
-    $.ajax({
-      type: "POST",
-      url:"/delete-poll",
-      data: {
-        pollID: $(this).val()
-      },
-      success: function(result) {
-        location.reload();
-      },
-      error: function(result) {
-        alert('Failed to delete');
-      }
-    });
-  });
-</script>
+            $.ajax({
+              type: "POST",
+              url:"/delete-poll",
+              data: {
+                pollID: $(this).val()
+              },
+              success: function(result) {
+                location.reload();
+              },
+              error: function(result) {
+                alert('Failed to delete');
+              }
+            });
+          });
+        </script>

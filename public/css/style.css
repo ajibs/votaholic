@@ -30,7 +30,7 @@ section {
 }
 
 hr {
-  border-color: #00b200;
+  border-color: #14bd0b;
   border-width: 3px;
   max-width: 50px;
 }
@@ -58,20 +58,24 @@ h4 {
 
 .navbar-default .navbar-brand, .navbar-default .navbar-nav>li>a {
   color: #333;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
+  font-size: 16px;
+}
+
+.header-title {
+  margin-bottom: 50px;  
 }
 
 .super-title {
   font-size: 64px;
-  font-weight: 700;
-  margin-bottom: 50px;
+  font-weight: 400;
 }
 
 .landing-button {
   text-transform: uppercase;
-  background-color: #00b200;
-  border-color: green;
+  background-color: #14bd0b;
+  border-color: #21941b;
   color: white;
   width: 80%;
   border-radius: 5px;
@@ -79,7 +83,13 @@ h4 {
   margin-bottom: 30px;
 }
 
-@media (min-width: 768px) {
+@media(min-width: 450px) and (max-width: 767px){
+  .landing-button {
+    width: 50%;
+  }
+}
+
+@media(min-width: 768px) {
   .landing-button {
     width: 250px;
   }
@@ -130,11 +140,11 @@ h4 {
 }
 
 .icon-color {
-  color: #00b200;
+  color: #14bd0b;
 }
 
 .dark-section {
-  background: green;
+  background: #14bd0b;
 }
 
 .light-heading {

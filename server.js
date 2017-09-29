@@ -1,10 +1,10 @@
 // load environment variables
 require('dotenv').config();
 
+
 /**
  * load dependencies
  */
-
 const express = require('express');
 
 const app = express();
@@ -46,15 +46,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.use(morgan('dev')); // log all requests to the console
+// log all requests to the console
+app.use(morgan('dev'));
 
 
-// required for passport
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(session({ secret: process.env.secret })); // session secret
-app.use(passport.initialize()); // initialize passport
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+/**
+ * required for passport
+ */
+
+// read cookies (needed for auth)
+app.use(cookieParser());
+
+// session secret
+app.use(session({ secret: process.env.secret }));
+
+// initialize passport
+app.use(passport.initialize());
+
+// persistent login sessions
+app.use(passport.session());
+
+// use connect-flash for flash messages stored in session
+app.use(flash());
 
 
 // connect to database
@@ -65,6 +78,7 @@ mongoose.connect(process.env.DB_URI);
 app.use(require('./app/routes'));
 
 
+// start server
 app.listen(port, () => {
   console.log(`Server is listening on http://localhost:${port}`);
 });
