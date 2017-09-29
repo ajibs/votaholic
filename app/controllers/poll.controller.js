@@ -82,7 +82,9 @@ function cleanLabel(labelID) {
 }
 
 function testIP(req, res) {
-  res.send(req.ip);
+  let result = {};
+  result.ip = req.ip;
+  res.send(JSON.stringify(result));
 }
 
 function castVote(req, res) {
