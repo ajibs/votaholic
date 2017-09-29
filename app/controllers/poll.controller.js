@@ -1,7 +1,5 @@
 const Poll = require('../models/pollModel');
 
-const ip = require('ip');
-
 
 function showNewPoll(req, res) {
   const username = req.user ? req.user.username : '';
@@ -81,9 +79,6 @@ function cleanLabel(labelID) {
   return label.replace('&newOption=', '');
 }
 
-function testIP(req, res) {
-  res.send(req.ip);
-}
 
 function castVote(req, res) {
   const userIP = req.ip;
@@ -167,5 +162,4 @@ module.exports = {
   showMyPolls,
   castVote,
   deletePoll,
-  testIP,
 };
