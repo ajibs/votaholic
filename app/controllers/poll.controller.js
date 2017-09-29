@@ -81,11 +81,13 @@ function cleanLabel(labelID) {
   return label.replace('&newOption=', '');
 }
 
+function testIP(req, res) {
+  const userIP = ip.address();
+  res.send(userIP);
+}
 
 function castVote(req, res) {
-  // const userIP = '601.43.84';
   const userIP = ip.address();
-  console.log(userIP);
   const pollID = req.body.id;
 
   // retrieve poll and check for user ip
@@ -168,4 +170,5 @@ module.exports = {
   showMyPolls,
   castVote,
   deletePoll,
+  testIP,
 };
