@@ -71,7 +71,7 @@ To use backend API's alone, please use the following instructions.
 
 ## Author
 
-* [Bolu Ajibawo](github.com/ajibs)
+* [Bolu Ajibawo](https://github.com/ajibs)
 
 
 
