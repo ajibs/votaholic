@@ -33,9 +33,6 @@ router.get('/', mainController.showHome);
 router.get('/explore', mainController.showExplore);
 
 
-// test ip
-router.get('/test', pollController.testIP);
-
 // signup user
 router.get('/signup', mainController.showSignup);
 router.post('/signup', passport.authenticate('local-signup', {
