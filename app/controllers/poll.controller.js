@@ -82,8 +82,7 @@ function cleanLabel(labelID) {
 }
 
 function testIP(req, res) {
-  const userIP = ip.address();
-  res.send(userIP);
+  res.send(req.ip);
 }
 
 function castVote(req, res) {
