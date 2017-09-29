@@ -46,6 +46,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+// detect proxies and correctly register client's ip address
+app.set('trust proxy', true);
+
+
 // log all requests to the console
 app.use(morgan('dev'));
 

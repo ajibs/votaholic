@@ -95,8 +95,6 @@ function castVote(req, res) {
   Poll.findOne({ _id: pollID, votedIP: userIP }, (error, poll) => {
     if (error) throw error;
     if (poll) {
-      console.log('poll found');
-
       // poll found means user ip is in poll document; thus user not allowed to vote
       res.json({
         status: 404,
