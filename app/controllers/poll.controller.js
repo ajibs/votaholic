@@ -82,13 +82,11 @@ function cleanLabel(labelID) {
 }
 
 function testIP(req, res) {
-  let result = {};
-  result.ip = req.ip;
-  res.send(JSON.stringify(result));
+  res.send(req.ip);
 }
 
 function castVote(req, res) {
-  const userIP = ip.address();
+  const userIP = req.ip;
   const pollID = req.body.id;
 
   // retrieve poll and check for user ip
