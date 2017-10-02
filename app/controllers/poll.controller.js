@@ -90,8 +90,8 @@ function castVote(req, res) {
     if (poll) {
       // poll found means user ip is in poll document; thus user not allowed to vote
       res.json({
-        status: 404,
-        error: 'You can only vote once on a poll',
+        voted: true,
+        message: 'You have voted already',
       });
     } else {
       /**

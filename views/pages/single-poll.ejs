@@ -17,9 +17,9 @@
               </div>  
             <% }) %>
             <% if (username.length > 0) { %>
-              <div class="radio">
-                <label for="customOption">Custom Option</label>        
-                <input type="text" name="newOption" id="custom" placeholder="Enter your own option">
+              <div class="customOption">
+                <label for="customOption">Don't like the options above?</label>        
+                <input type="text" name="newOption" id="custom" placeholder="Enter a new option">
               </div>
             <% } %>
               <button type="submit" class="btn btn-primary btn-lg">Vote</button>
@@ -57,7 +57,11 @@
                   id: "<%=singlePoll._id%>",
                 },
                 success: function(result) {
-                  location.reload();
+                  if (result.voted) {
+                    alert(result.message);
+                  } else {
+                    location.reload();
+                  }
                 },
                 error: function(result) {
                   alert('failed to cast vote');
